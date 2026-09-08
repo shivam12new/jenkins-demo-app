@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-demo
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jenkins-demo
+  template:
+    metadata:
+      labels:
+        app: jenkins-demo
+    spec:
+      containers:
+      - name: jenkins-demo
+        image: shivamacrdemo.azurecr.io/jenkins-demo:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-demo-service
+spec:
+  selector:
+    app: jenkins-demo
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
